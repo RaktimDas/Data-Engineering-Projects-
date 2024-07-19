@@ -1,0 +1,83 @@
+{
+  "Comment": "A description of my state machine",
+  "StartAt": "StartCrawler",
+  "States": {
+    "StartCrawler": {
+      "Type": "Task",
+      "Parameters": {
+        "Name": "raw_daily_file_crawler"
+      },
+      "Resource": "arn:aws:states:::aws-sdk:glue:startCrawler",
+      "Next": "GetCrawler"
+    },
+    "GetCrawler": {
+      "Type": "Task",
+      "Parameters": {
+        "Name": "raw_daily_file_crawler"
+      },
+      "Resource": "arn:aws:states:::aws-sdk:glue:getCrawler",
+      "Next": "Crawler Status Check"
+    },
+    "Crawler Status Check": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.Crawler.State",
+          "StringMatches": "RUNNING",
+          "Next": "Wait"
+        }
+      ],
+      "Default": "Glue StartJobRun"
+    },
+    "Wait": {
+      "Type": "Wait",
+      "Seconds": 10,
+      "Next": "GetCrawler"
+    },
+    "Glue StartJobRun": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::glue:startJobRun",
+      "Parameters": {
+        "JobName": "airline_data_ingestion"
+      },
+      "Next": "Glue Job Status Check",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.TaskFailed"
+          ],
+          "Next": "failed_notification"
+        }
+      ]
+    },
+    "Glue Job Status Check": {
+      "Type": "Choice",
+      "Default": "failed_notification",
+      "Choices": [
+        {
+          "Variable": "$.JobRunState",
+          "StringMatches": "SUCCEEDED",
+          "Next": "success_notification"
+        }
+      ]
+    },
+    "success_notification": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sns:publish",
+      "Parameters": {
+        "TopicArn": "arn:aws:sns:us-east-1:905418151282:first_sns",
+        "Message": "Glue Job Execution Successful"
+      },
+      "End": true
+    },
+    "failed_notification": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sns:publish",
+      "Parameters": {
+        "TopicArn": "arn:aws:sns:us-east-1:905418151282:first_sns",
+        "Message": "Glue Job Execution Failed"
+      },
+      "End": true
+    }
+  }
+}
