@@ -24,7 +24,7 @@ The project is designed with the following components:
 - **Apache Spark**: For data processing with its master and worker nodes.
 - **Cassandra**: Where the processed data will be stored.
 
-## What You'll Learn
+## Learnings 
 
 - Setting up a data pipeline with Apache Airflow
 - Real-time data streaming with Apache Kafka
@@ -44,20 +44,12 @@ The project is designed with the following components:
 - PostgreSQL
 - Docker
 
-## Getting Started
+**Executions** :
+Terminal - Downloading the Docker Images and Setting Up the Container 
+           Code: **Docker compose -f docker-compose.yml up -d**
+After the Container is up and running, the ports are exposed and we can access the required services.
+Step 1: Confluent is opened up.
+Step 2: Airflow DAG (Data Acyclic Graph) and the dag is run and the data is processed into the Kafka topic.
+Step 3: On Parallel the spark application runs the data frame the streaming is started and the data starts to get ingested into the Cassandra table.
 
-1. Clone the repository:
-    ```bash
-    git clone https://github.com/airscholar/e2e-data-engineering.git
-    ```
-
-2. Navigate to the project directory:
-    ```bash
-    cd e2e-data-engineering
-    ```
-
-3. Run Docker Compose to spin up the services:
-    ```bash
-    docker-compose up
-    ```
 
