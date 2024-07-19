@@ -4,6 +4,7 @@ This project serves as a comprehensive guide to building an end-to-end data engi
 
 
 ## System Architecture
+![System Architecture](Airline_Data_Ingestion_Project/architecture.png)
 
 The Project is designed with the following components:
 - **Data Source**: we use Airline Dataset in CSV format, there are two files Dimension table and fact table.
