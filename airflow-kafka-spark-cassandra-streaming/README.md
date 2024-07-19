@@ -44,12 +44,12 @@ The project is designed with the following components:
 - PostgreSQL
 - Docker
 
-**Executions** :
--Terminal - Downloading the Docker Images and Setting Up the Container 
+## Executions
+- Terminal - Downloading the Docker Images and Setting Up the Container 
            Code: **Docker compose -f docker-compose.yml up -d**
 After the Container is up and running, the ports are exposed and we can access the required services.
--Step 1: Confluent is opened up.
--Step 2: Airflow DAG (Data Acyclic Graph) and the dag is run and the data is processed into the Kafka topic.
--Step 3: On Parallel the spark application runs the data frame the streaming is started and the data starts to get ingested into the Cassandra table.
+- Step 1: Confluent is spinned up.
+- Step 2: Airflow DAG (Data Acyclic Graph) and the dag is run and the data is processed into the Kafka topic.
+- Step 3: On Parallel the spark application runs the data frame the streaming is started and the data starts to get ingested into the Cassandra table.
 
 
